@@ -104,3 +104,41 @@ const useTitle = initialTitle => {
 `componentDidMount` , `componentDidUpdate` , `componentWillUnmount` 의 역할을 useEffect 가 한다.
 
 두번째 파라미터로 state 변수를 지정해주면 해당 변수가 update 될 때만 useEffect 가 작동한다.
+
+# useRef
+
+```tsx
+const App = () => {
+  const potato = useRef();
+  setTimeout(() => console.log(potato.current.focus()), 5000);
+  return (
+    <div className="App">
+      <div>aaa</div>
+      <input ref={potato} placeholder="la" />
+    </div>
+  );
+};
+```
+
+getElementById 와 비슷하다.
+
+## return (componentWillUnmount)
+
+```tsx
+const useClick = onClick => {
+  const element = useRef();
+  useEffect(() => {
+    if (element.current) {
+      element.current.addEventListener("click", onClick);
+    }
+    return () => {
+      if (element.current) {
+        element.current.removeEventListener("click", onClick);
+      }
+    };
+  });
+  return element;
+};
+```
+
+useEffect 에서 return 해주는 함수는 component 가 unmount 될 때 실행 된다.
