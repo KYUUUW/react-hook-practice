@@ -1,8 +1,6 @@
-# React Hooks
-
-Created: May 20, 2020 11:15 PM
-
 functional component 에서 state 를 갖을 수 있게 해준다. ComponentDidMount() 등을 사용하지 않아도 된다. Functional Programming 을 사용 할 수 있게 해준다.
+
+# useState
 
 ```tsx
 import React, { useState } from "react";
@@ -27,7 +25,7 @@ export default App;
 
 `this.state.item` 이렇게 값에 접근 할 필요 없고. `this.setState({item: 1})` 로 수정해 줄 필요가 없다.
 
-# 분리된 엔티티에서 이벤트 처리
+## 분리된 엔티티에서 이벤트 처리
 
 ```tsx
 const useInput = initialValue => {
@@ -53,7 +51,7 @@ export default App;
 
 상태 관리하는 것을 다른 부분으로 함수로 분리 할 수 있고, 다른 파일로 또한 분리 할 수 있다.
 
-## validator
+### validator
 
 ```tsx
 const useInput = (initialValue, validator) => {
@@ -73,3 +71,36 @@ const useInput = (initialValue, validator) => {
   return { value, onChange };
 };
 ```
+
+### tab 만들기
+
+```tsx
+export const useTabs = (initialTab, allTabs) => {
+  if (!allTabs || !Array.isArray(allTabs)) {
+    return;
+  }
+  const [currentIndex, setCurrentIndex] = useState(initialTab);
+  return {
+    currentItem: allTabs[currentIndex],
+    changeItem: setCurrentIndex,
+  };
+};
+```
+
+# useEffect
+
+```tsx
+const useTitle = initialTitle => {
+  const [title, setTitle] = useState(initialTitle);
+  const updateTitle = () => {
+    const htmlTitle = document.querySelector("title");
+    htmlTitle.innerText = title;
+  };
+  useEffect(updateTitle, [title]);
+  return setTitle;
+};
+```
+
+`componentDidMount` , `componentDidUpdate` , `componentWillUnmount` 의 역할을 useEffect 가 한다.
+
+두번째 파라미터로 state 변수를 지정해주면 해당 변수가 update 될 때만 useEffect 가 작동한다.
